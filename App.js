@@ -1,8 +1,10 @@
-import { Button, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { Text, View, TextInput, Alert, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import RadioForm from 'react-native-simple-radio-button';
 import { useState } from 'react';
 import { Header as HeaderRNE, HeaderProps, Icon } from 'react-native-elements';
+import styles from './Styles';
+import MyButton from './MyButton';
 
 export default function App() {
   const [weight, setWeight] = useState(0);
@@ -81,6 +83,7 @@ export default function App() {
   }
   
   return (
+      
     <View style={styles.container}>
       <HeaderRNE
         /* leftComponent={{
@@ -89,86 +92,56 @@ export default function App() {
         }} */
         centerComponent={{ text: 'Alcometer', style: styles.heading }}
       />
-      <View style={styles.field}>
-        <Text> Weight</Text>
-        <TextInput 
-        style={styles.input}
-        onChangeText={text => setWeight(text)}
-        placeholder="in kilograms"
-        keyboardType='numeric' ></TextInput>
-      </View>
-      <View style={styles.field}>
-        <Text> Bottles</Text>
-        <Picker 
-        style={styles.picker}
-        onValueChange={(itemValue) => setBottle(itemValue)}
-        selectedValue={bottle} 
-        >
-          {bottles.map((bottle, index) => (
-            <Picker.Item key={index} label={bottle.label} value={bottle.value} />
-          ))}
-        </Picker>
-      </View>
-      <View style={styles.field}>
-        <Text> Time</Text>
-        <Picker 
-        style={styles.picker}
-        onValueChange={(itemValue) => setTime(itemValue)}
-        selectedValue={time} 
-        >
-          {times.map((time, index) => (
-            <Picker.Item key={index} label={time.label} value={time.value} />
-          ))}
-        </Picker>
-      </View>
-      <View style={styles.field}>
-        <Text> Gender</Text>
-        <RadioForm 
-          style={styles.radio}
-          buttonSize = {10}
-          radio_props={genders}
-          initial={0}
-          onPress={(value) => setGender(value)}
-        />
-        { isVisibleResult ? <Text
-          style={[styles.output, {color: outputColor}]}
-          >{alcoholLevel.toFixed(2)}</Text> : null }
-      </View>       
-      <Button 
-        onPress={calculate} 
-        title="Calculate"
-      ></Button>
+      <ScrollView>
+        <View style={styles.field}>
+          <Text> Weight</Text>
+          <TextInput 
+          style={styles.input}
+          onChangeText={text => setWeight(text)}
+          placeholder="in kilograms"
+          keyboardType='numeric' ></TextInput>
+        </View>
+        <View style={styles.field}>
+          <Text> Bottles</Text>
+          <Picker 
+          style={styles.picker}
+          onValueChange={(itemValue) => setBottle(itemValue)}
+          selectedValue={bottle} 
+          >
+            {bottles.map((bottle, index) => (
+              <Picker.Item key={index} label={bottle.label} value={bottle.value} />
+            ))}
+          </Picker>
+        </View>
+        <View style={styles.field}>
+          <Text> Time</Text>
+          <Picker 
+          style={styles.picker}
+          onValueChange={(itemValue) => setTime(itemValue)}
+          selectedValue={time} 
+          >
+            {times.map((time, index) => (
+              <Picker.Item key={index} label={time.label} value={time.value} />
+            ))}
+          </Picker>
+        </View>
+        <View style={styles.field}>
+          <Text> Gender</Text>
+          <RadioForm 
+            style={styles.radio}
+            buttonSize = {10}
+            radio_props={genders}
+            initial={0}
+            onPress={(value) => setGender(value)}
+          />
+          { isVisibleResult ? <Text
+            style={[styles.output, {color: outputColor}]}
+            >{alcoholLevel.toFixed(2)}</Text> : null }
+        </View>  
+        <View style={styles.field}>
+          <MyButton action={calculate} />        
+        </View>              
+      </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 28
-  },
-  field: {
-    margin: 10
-  },
-  input: {
-    marginLeft: 10
-  },
-  radio: {
-    marginTop: 10,
-    marginBottom: 10
-  },
-  picker: {
-    margin: 10
-  },
-  heading: {
-    color: 'white',
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  output: {
-    fontSize: 38,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: 'hsl(217, 0%, 23%)'
-  }
-});
